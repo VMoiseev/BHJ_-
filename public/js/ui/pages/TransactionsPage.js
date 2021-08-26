@@ -10,14 +10,15 @@ class TransactionsPage {
    * Сохраняет переданный элемент и регистрирует события
    * через registerEvents()
    * */
-  constructor( element ) {
-    if (element) {
-      this.element = element;
-      this.registerEvents();
-    } else {
+  constructor(element) {
+    if (!element) {
       throw new Error ("Ошибка! Элемент не существует!");
     }
+
+    this.element = element;
+    this.registerEvents();
   }
+
 
   /**
    * Вызывает метод render для отрисовки страницы
@@ -37,19 +38,20 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-    const removeBtns = Array.from(document.querySelectorAll(".remove-account"));
-    const transactionBtns = Array.from(document.querySelectorAll(".transaction__remove"));
+    const removeBtns = this.element.querySelector(".remove-account");
+    const transactionBtns = this.element.querySelectorAll(".transaction__remove");
 
-    removeBtns.forEach(item => {
-      item.onclick = () => {
-        this.removeAccount();
-      }
+    removeBtns.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.removeAccount();
     })
-    transactionBtns.forEach(item => {
-      item.onclick = () => {
-        this.removeTransaction();
-      }
-    })
+
+    for (let transactionBtn of transactionBtns) {
+      transactionBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.removeTransaction(transactionBtn.dataset.id);
+      })
+    }
   }
 
   /**
@@ -63,14 +65,11 @@ class TransactionsPage {
    * */
   removeAccount() {
     const agreeBeforRemove = confirm("Вы действительно хотите удалить счёт?");
-    
-    if (agreeBeforRemove === true) {
+    if (agreeBeforRemove) {
       Account.remove(this.lastOptions.account_id, {}, (error, response) => {
         if (response.success) {
           this.clear();
           App.updateWidgets();
-        } else {
-          error;
         }
       });
     }
@@ -82,15 +81,12 @@ class TransactionsPage {
    * По удалению транзакции вызовите метод App.update(),
    * либо обновляйте текущую страницу (метод update) и виджет со счетами
    * */
-  removeTransaction( id ) {
+  removeTransaction(id) {
     const agreeBeforRemoveTransaction = confirm("Вы действительно хотите удалить транзакцию?");
-
     if (agreeBeforRemoveTransaction) {
-      Transaction.remove(id, {}, (error, response) => {
+      Transaction.remove(id, (error, response) => {
         if (response.success) {
           App.update();
-        } else {
-          error;
         }
       });
     }
@@ -102,16 +98,20 @@ class TransactionsPage {
    * Получает список Transaction.list и полученные данные передаёт
    * в TransactionsPage.renderTransactions()
    * */
-  render(options){
-    if (options) {
-      this.lastOptions = options;
-      this.renderTitle(Account.get(options, () => {
-        return response.success;
-      }));
-      this.renderTransactions(Transaction.list(options, () => {
-        return response.success;
-      }));
-    }
+  render(options) {
+    this.lastOptions = options;
+      
+    Account.get(options.account_id, User.current(), (error, response) => {
+      if (response.success) {
+        this.renderTitle(response.data.name);
+      }
+    });
+
+    Transaction.list(options.account_id, User.current(), (error, response) => {
+      if (response.success) {
+        this.renderTransactions(response.data);
+      }
+    });
   }
 
   /**
@@ -136,7 +136,7 @@ class TransactionsPage {
    * Форматирует дату в формате 2019-03-10 03:20:41 (строка)
    * в формат «10 марта 2019 г. в 03:20»
    * */
-  formatDate(date){
+  formatDate(date) {
     return `${new Date(date).toLocaleString("ru", {
       day: "numeric",
       month: "long",
@@ -151,7 +151,7 @@ class TransactionsPage {
    * Формирует HTML-код транзакции (дохода или расхода).
    * item - объект с информацией о транзакции
    * */
-  getTransactionHTML(item){
+  getTransactionHTML(item) {
     return `
       <div class="transaction transaction_${item.type.toLowerCase()} row">
         <div class="col-md-7 transaction__details">
@@ -188,7 +188,7 @@ class TransactionsPage {
    * Отрисовывает список транзакций на странице
    * используя getTransactionHTML
    * */
-  renderTransactions(data){
+  renderTransactions(data) {
     this.element.querySelector(".content").innerHTML = "";
     data.forEach(item => {
       this.element.querySelector(".content").innerHTML += this.getTransactionHTML(item);

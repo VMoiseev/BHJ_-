@@ -6,14 +6,6 @@
   const xhr = new XMLHttpRequest();
   const formData = new FormData();
   xhr.responseType = "json";
-  xhr.withCredentials = true;
-
-  xhr.addEventListener("load", () => {
-    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-      let error = null;
-      options.callback(error, xhr.response);
-    }
-  })
 
   if (options.method === "GET") {
     if (options.data != null) {
@@ -29,7 +21,13 @@
       formData.append(i, options.data[i]);
     }
     xhr.open(options.method, options.url, true);
+    xhr.send(formData);
   }
-  xhr.send(formData);
-  return xhr;
+
+  xhr.addEventListener("load", () => {
+    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+      let error = null;
+      options.callback(error, xhr.response);
+    }
+  })
 };

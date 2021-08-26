@@ -12,11 +12,11 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor(element) {
-    if (element) {
-      this.element = element;
-    } else {
+    if (!element) {
       throw new Error("Ошибка! Элемент не существует!");
     }
+    
+    this.element = element;
     this.registerEvents();
   }
 

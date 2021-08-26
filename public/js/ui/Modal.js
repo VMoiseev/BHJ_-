@@ -8,12 +8,12 @@ class Modal {
    * Регистрирует обработчики событий с помощью Modal.registerEvents()
    * Если переданный элемент не существует, необходимо выкинуть ошибку.
    * */
-  constructor(element){
-    if (element) {
-      this.element = element;
-    } else {
+  constructor(element) {
+    if (!element) {
       throw new Error("Ошибка! Элемент не существует!");
     }
+
+    this.element = element;
     this.registerEvents();
   }
 
@@ -48,6 +48,6 @@ class Modal {
    * Закрывает окно: удаляет CSS-свойство display
    * */
   close() {
-    this.element.removeAttribute("style");
+    this.element.style.display = "none";
   }
 }

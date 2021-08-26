@@ -24,8 +24,6 @@ class CreateTransactionForm extends AsyncForm {
           this.element.querySelector("select").innerHTML += `
           <option value="${item.id}">${item.name}</option>
         `});
-      } else {
-        error;
       }
     });
   }
@@ -46,8 +44,6 @@ class CreateTransactionForm extends AsyncForm {
           App.getModal("newExpense").close();
         }
         App.update();
-      } else {
-        error;
       }
     });
   }

@@ -13,10 +13,10 @@ class TransactionsWidget {
   constructor(element) {
     if (!element) {
       throw new Error("Ошибка! Элемент не существует!");
-    } else {
-      this.element = element;
-      this.registerEvents();
     }
+    
+    this.element = element;
+    this.registerEvents();
   }
 
   /**
