@@ -38,20 +38,17 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-    const removeBtns = this.element.querySelector(".remove-account");
-    const transactionBtns = this.element.querySelectorAll(".transaction__remove");
-
-    removeBtns.addEventListener("click", (e) => {
+    this.element.addEventListener("click", (e) => {
       e.preventDefault();
-      this.removeAccount();
-    })
-
-    for (let transactionBtn of transactionBtns) {
-      transactionBtn.addEventListener("click", (e) => {
-        e.preventDefault();
+      const removeBtn = e.target.closest(".remove-account");
+      const transactionBtn = e.target.closest(".transaction__remove");
+      if (removeBtn) {
+        this.removeAccount();
+      }
+      if (transactionBtn) {
         this.removeTransaction(transactionBtn.dataset.id);
-      })
-    }
+      }
+    });
   }
 
   /**

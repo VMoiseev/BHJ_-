@@ -31,16 +31,19 @@ class AccountsWidget {
    * */
   registerEvents() {
     const createAccount = this.element.querySelector(".create-account");
-    const account = this.element.querySelector(".account");
 
     createAccount.addEventListener("click", (e) => {
       e.preventDefault();
       App.getModal("createAccount").open();
     });
 
-    account.addEventListener("click", (e) => {
+    this.element.addEventListener("click", (e) => {
       e.preventDefault();
-      this.onSelectAccount(account);
+      const currentElement = e.target;
+      const account = currentElement.closest(".account");
+      if (account && account.classList.contains("account")) {
+        this.onSelectAccount(currentElement);
+      }
     });
   }
 
