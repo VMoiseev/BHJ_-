@@ -19,7 +19,6 @@ class TransactionsPage {
     this.registerEvents();
   }
 
-
   /**
    * Вызывает метод render для отрисовки страницы
    * */
@@ -61,6 +60,10 @@ class TransactionsPage {
    * для обновления приложения
    * */
   removeAccount() {
+    if (!this.lastOptions) {
+      return;
+    }
+    
     const agreeBeforRemove = confirm("Вы действительно хотите удалить счёт?");
     if (agreeBeforRemove) {
       Account.remove(this.lastOptions.account_id, {}, (error, response) => {
@@ -96,15 +99,18 @@ class TransactionsPage {
    * в TransactionsPage.renderTransactions()
    * */
   render(options) {
+    if (!options) {
+      return;
+    }
+
     this.lastOptions = options;
-      
     Account.get(options.account_id, User.current(), (error, response) => {
       if (response.success) {
         this.renderTitle(response.data.name);
       }
     });
 
-    Transaction.list(options.account_id, User.current(), (error, response) => {
+    Transaction.list(options, (error, response) => {
       if (response.success) {
         this.renderTransactions(response.data);
       }
