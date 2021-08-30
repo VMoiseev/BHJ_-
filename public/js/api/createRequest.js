@@ -21,7 +21,6 @@
       formData.append(i, options.data[i]);
     }
     xhr.open(options.method, options.url, true);
-    xhr.send(formData);
   }
 
   xhr.addEventListener("load", () => {
@@ -29,5 +28,6 @@
       let error = null;
       options.callback(error, xhr.response);
     }
-  })
+  });
+  xhr.send(formData);
 };

@@ -62,7 +62,9 @@ class AccountsWidget {
       Account.list(User.current(), (error, response) => {
         if (response.success) {
           this.clear();
-          this.renderItem(response.data);
+          for (const account of response.data) {
+            this.renderItem(account);
+          }
         }
       });
     }
@@ -94,7 +96,7 @@ class AccountsWidget {
       active.classList.remove("active");
     }
     element.classList.add("active");
-    this.currentAccountId = element.dataset.id
+    this.currentAccountId = element.dataset.id;
     App.showPage("transactions", {account_id: this.currentAccountId});
   }
 

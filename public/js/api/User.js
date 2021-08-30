@@ -38,6 +38,7 @@ class User {
     createRequest({
       url: this.URL + "/current",
       method: "GET",
+      data: this.current(),
       callback: (err, response) => {
         if (response.success === true) {
           this.setCurrent(response.user);
@@ -93,14 +94,14 @@ class User {
    * Производит выход из приложения. После успешного
    * выхода необходимо вызвать метод User.unsetCurrent
    * */
-  static logout(data, callback) {
+  static logout(callback) {
     createRequest({
-      data,
       url: this.URL + "/logout",
       method: "POST",
+      data: this.current(),
       callback(err, response) {
         if (response && response.success) {
-          this.unsetCurrent;
+          this.unsetCurrent(response.user);
         }
         callback(err,response);
       }
