@@ -39,13 +39,13 @@ class User {
       url: this.URL + "/current",
       method: "GET",
       data: this.current(),
-      callback: (err, response) => {
-        if (response.success === true) {
+      callback: (error, response) => {
+        if (response && response.success) {
           this.setCurrent(response.user);
         } else {
           this.unsetCurrent();
         }
-        callback(err, response);
+        callback(error, response);
       }
     });
   }
@@ -61,11 +61,11 @@ class User {
       url: this.URL + "/login",
       method: "POST",
       data,
-      callback: (err, response) => {
+      callback: (error, response) => {
         if (response && response.user) {
           this.setCurrent(response.user);
         }
-        callback(err, response);
+        callback(error, response);
       }
     });
   }
@@ -81,11 +81,11 @@ class User {
       url: this.URL + "/register",
       method: "POST",
       data,
-      callback: (err, response) => {
+      callback: (error, response) => {
         if (response && response.user) {
           this.setCurrent(response.user);
         }
-        callback(err,response);
+        callback(error,response);
       }
     });
   }
@@ -99,11 +99,11 @@ class User {
       url: this.URL + "/logout",
       method: "POST",
       data: this.current(),
-      callback(err, response) {
+      callback(error, response) {
         if (response && response.success) {
           this.unsetCurrent(response.user);
         }
-        callback(err,response);
+        callback(error,response);
       }
     });
   }

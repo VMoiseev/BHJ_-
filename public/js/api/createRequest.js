@@ -11,23 +11,26 @@
     if (options.data != null) {
       options.url += "?";
       for (let i in options.data) {
-        options.url += `${i}=${options.data[i]}.join("&")`;
+        options.url += i + "=" + options.data[i] + "&";
       }
       options.url = options.url.slice(0,-1);
     }
-    xhr.open(options.method, options.url, true);
   } else {
     for (let i in options.data) {
       formData.append(i, options.data[i]);
     }
-    xhr.open(options.method, options.url, true);
   }
 
-  xhr.addEventListener("load", () => {
-    if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-      let error = null;
-      options.callback(error, xhr.response);
+  xhr.addEventListener("load", () => options.callback(null, xhr.response));
+
+  try {
+    xhr.open(options.method, options.url, true);
+    if (formData === undefined) {
+      xhr.send();
+    } else {
+      xhr.send(formData);
     }
-  });
-  xhr.send(formData);
+  } catch (e) {
+    options.callback(e);
+  }
 };

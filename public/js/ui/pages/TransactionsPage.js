@@ -25,9 +25,9 @@ class TransactionsPage {
   update() {
     if (this.lastOptions) {
       this.render(this.lastOptions);
-    } else {
-      this.render();
+      return;
     }
+    this.render();
   }
 
   /**
@@ -105,15 +105,11 @@ class TransactionsPage {
 
     this.lastOptions = options;
     Account.get(options.account_id, User.current(), (error, response) => {
-      if (response.success) {
-        this.renderTitle(response.data.name);
-      }
+      this.renderTitle(response.data.name);
     });
 
     Transaction.list(options, (error, response) => {
-      if (response.success) {
-        this.renderTransactions(response.data);
-      }
+      this.renderTransactions(response.data);
     });
   }
 
@@ -132,7 +128,7 @@ class TransactionsPage {
    * Устанавливает заголовок в элемент .content-title
    * */
   renderTitle(name) {
-    this.element.querySelector("span.content-title").innerText = name;
+    this.element.querySelector(".content-title").textContent = name;
   }
 
   /**
