@@ -30,19 +30,9 @@
       "id": "3"
     },
     {
-      "name": "1",
-      "user_id": "1",
-      "id": "3xbtc7m5egksy90rw5"
-    },
-    {
       "name": "Зарплата",
       "user_id": "1",
       "id": "3xbtc7m6msksyx7bqo"
-    },
-    {
-      "name": "2",
-      "user_id": "1",
-      "id": "3xbtc7m8bkkt08qcwr"
     }
   ],
   "transactions": [
@@ -189,6 +179,24 @@
       "account_id": "1",
       "user_id": "1",
       "created_at": "2021-08-30T17:29:01.337Z"
+    },
+    {
+      "id": "3xbtc7m7lckt1llp4p",
+      "type": "income",
+      "name": "май",
+      "sum": 1000,
+      "account_id": "3xbtc7m6msksyx7bqo",
+      "user_id": "1",
+      "created_at": "2021-09-01T14:32:00.120Z"
+    },
+    {
+      "id": "3xbtc7m3l8kt1oja0n",
+      "type": "income",
+      "name": "1",
+      "sum": 100,
+      "account_id": "3xbtc7m6msksyx7bqo",
+      "user_id": "1",
+      "created_at": "2021-09-01T15:54:06.070Z"
     }
   ]
 }

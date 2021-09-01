@@ -82,13 +82,13 @@ class TransactionsPage {
    * либо обновляйте текущую страницу (метод update) и виджет со счетами
    * */
   removeTransaction(id) {
+    const currentTransactionElement = this.element
+      .querySelector(`button[data-id="${id}"]`)
+      .closest(".transaction");
     const agreeBeforRemoveTransaction = confirm("Вы действительно хотите удалить транзакцию?");
     if (agreeBeforRemoveTransaction) {
-      Transaction.remove(id, (error, response) => {
-        if (response.success) {
-          App.update();
-        }
-      });
+      currentTransactionElement.remove();
+      Transaction.remove(id, User.current(), App.update.bind(App));
     }
   }
 

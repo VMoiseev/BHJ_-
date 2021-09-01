@@ -41,9 +41,7 @@ class AccountsWidget {
       e.preventDefault();
       const currentElement = e.target;
       const account = currentElement.closest(".account");
-      if (account && account.classList.contains("account")) {
-        this.onSelectAccount(currentElement);
-      }
+      this.onSelectAccount(account);
     });
   }
 
